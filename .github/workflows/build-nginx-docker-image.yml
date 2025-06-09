@@ -1,0 +1,38 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GHCR_TOKEN }}
+      - name: Build Nginx
+        run: |
+          cd nginx-stream
+          sh nginx-build.sh
+          sh nginx-setup.sh
+      - name: Build the Docker image
+        run: |
+          IMAGE_ID=ghcr.io/${{ github.repository_owner }}/nginx-stream
+          IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
+          TAG=${{ github.sha }}
+          cd nginx-stream
+          docker build . --file Dockerfile --tag $IMAGE_ID:$TAG --tag $IMAGE_ID:latest
+      - name: Push the Docker image
+        run: |
+          IMAGE_ID=ghcr.io/${{ github.repository_owner }}/nginx-stream
+          IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
+          TAG=${{ github.sha }}
+          docker push $IMAGE_ID:$TAG
+          docker push $IMAGE_ID:latest
