@@ -19,7 +19,6 @@ jobs:
           password: ${{ secrets.GHCR_TOKEN }}
       - name: Build Nginx
         run: |
-          cd nginx-stream
           sh nginx-build.sh
           sh nginx-setup.sh
       - name: Build the Docker image

@@ -12,9 +12,9 @@ RUN \
     mkdir -p /var/lib/nginx/scgi ;\
     mkdir -p /var/lib/nginx/uwsgi
 
-COPY conf/*            /etc/nginx/
-COPY html              /usr/share/nginx/
-COPY objs/*.so         /usr/share/nginx/modules/
+COPY nginx/conf/*            /etc/nginx/
+COPY nginx/html              /usr/share/nginx/
+COPY nginx/objs/*.so         /usr/share/nginx/modules/
 COPY update-hosts.sh   /bin/update-hosts.sh
 COPY update-ssl.sh     /bin/update-ssl.sh
 RUN \

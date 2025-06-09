@@ -1,7 +1,7 @@
 #!/usr/bin/env sh
 
 # 初始化构建DOCKER 时配置 重新调整nginx的配置参数
-
+cd nginx || echo "nginx source dir missing"
 ### 1. worker_processes 1; -> worker_processes auto;
 sed -i 's/^\(\s*worker_processes\)\s\+1;/\1  auto;/' conf/nginx.conf
 ### 2. worker_connections 1024; -> worker_connections 65535;

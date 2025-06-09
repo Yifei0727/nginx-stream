@@ -1,8 +1,10 @@
 #!/usr/bin/env bash
+sudo apt update
 sudo apt install -y build-essential libpcre3 libpcre3-dev zlib1g zlib1g-dev libssl-dev libxml2-dev libxslt-dev libgd-dev wget
 wget https://nginx.org/download/nginx-1.25.3.tar.gz
 tar -zxvf nginx-1.25.3.tar.gz
-cd nginx-1.25.3 || echo "nginx not exists"
+mv nginx-1.25.3 nginx
+cd nginx || echo "nginx not exists"
 ./configure \
     --with-cc-opt='-g -O2 -fstack-protector-strong -Wformat -Werror=format-security -fPIC -Wdate-time -D_FORTIFY_SOURCE=2' \
     --with-ld-opt='-Wl,-Bsymbolic-functions -Wl,-z,relro -Wl,-z,now -fPIC' \
