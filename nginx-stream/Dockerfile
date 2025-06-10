@@ -14,7 +14,7 @@ RUN \
 
 COPY nginx/conf/*            /etc/nginx/
 COPY nginx/html              /usr/share/nginx/
-COPY nginx/objs/*.so         /usr/share/nginx/modules/
+#COPY nginx/objs/*.so         /usr/share/nginx/modules/
 COPY update-hosts.sh   /bin/update-hosts.sh
 COPY update-ssl.sh     /bin/update-ssl.sh
 RUN \
