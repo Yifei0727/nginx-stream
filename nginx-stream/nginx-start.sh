@@ -5,8 +5,12 @@ STREAM_CONF="/etc/nginx/stream-enabled/stream.conf"
 
 # 如果不存在 hosts 文件则结束
 if [ ! -f "$HOSTS_FILE" ]; then
-  echo "hosts 文件不存在"
+  echo "映射文件 $HOSTS_FILE 不存在:$(ls /etc)"
   exit 1
+fi
+
+if [ ! -f "/etc/ssl/nginx/default.key" ]; then
+  /usr/bin/update-ssl.sh
 fi
 
 # 清空原有配置
@@ -46,3 +50,4 @@ server {
     ssl_preread on;
 }
 EOF
+/usr/sbin/nginx  -c /etc/nginx/nginx.conf -g "daemon off;"

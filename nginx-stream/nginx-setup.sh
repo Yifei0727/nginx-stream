@@ -5,7 +5,9 @@ cd nginx || echo "nginx source dir missing"
 ### 1. worker_processes 1; -> worker_processes auto;
 sed -i 's/^\(\s*worker_processes\)\s\+1;/\1  auto;/' conf/nginx.conf
 ### 2. worker_connections 1024; -> worker_connections 65535;
-sed -i 's/^\(\s*worker_connections\)\s\+1;/\1  65535;/' conf/nginx.conf
+sed -i 's/^\(\s*worker_connections\)\s\+[0-9]\+;/\1 65535;/' conf/nginx.conf
+### 修改 #pid    logs/nginx.pid 路径为 /var/run/nginx.pid
+# sed -i 's/^\s*#*\s*pid\s\+logs\/nginx\.pid;/pid \/var\/run\/nginx\.pid;/' conf/nginx.conf
 
 ### 4. 新的 http 配置内容
 NEW_HTTP_BLOCK=$(cat <<'EOF'
