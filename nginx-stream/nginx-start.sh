@@ -2,6 +2,11 @@
 
 HOSTS_FILE="/etc/hosts.txt"
 STREAM_CONF="/etc/nginx/stream-enabled/stream.conf"
+RESOLVERS="$(awk '/^nameserver[[:space:]]+/ {print $2}' /etc/resolv.conf | tr '\n' ' ')"
+
+if [ -z "$RESOLVERS" ]; then
+  RESOLVERS="1.1.1.1 8.8.8.8"
+fi
 
 # 如果不存在 hosts 文件则结束
 if [ ! -f "$HOSTS_FILE" ]; then
@@ -27,12 +32,14 @@ done
 
 echo "}" >> "$STREAM_CONF"
 echo "" >> "$STREAM_CONF"
+echo "resolver $RESOLVERS valid=30s;" >> "$STREAM_CONF"
+echo "" >> "$STREAM_CONF"
 
 # 写入 upstream
 grep -vE '^\s*$|^\s*#' "$HOSTS_FILE" | while read -r domain; do
     cat <<EOF >> "$STREAM_CONF"
 upstream $domain {
-    server $domain:443;
+    server $domain:443 resolve;
 }
 EOF
 done
