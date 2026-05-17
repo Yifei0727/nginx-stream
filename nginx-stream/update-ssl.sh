@@ -18,4 +18,6 @@ mkdir "$TMP_DIR" && cd "$TMP_DIR" || echo "Failed to create temporary directory"
 openssl req -new -x509 -newkey rsa:2048 -out default.cer -keyout default.key -nodes -subj "/CN=default" -days 30
 mkdir -p "$NGINX_SSL_DIR/"
 mv default.cer  default.key "$NGINX_SSL_DIR/"
-nginx -s reload
+if [ -f /run/nginx.pid ] && kill -0 "$(cat /run/nginx.pid)" 2>/dev/null; then
+    nginx -s reload
+fi
