@@ -1,9 +1,10 @@
 #!/usr/bin/env bash
+export NGINX_VERSION='1.30.1'
 sudo apt update
 sudo apt install -y build-essential libpcre3 libpcre3-dev zlib1g zlib1g-dev libssl-dev libxml2-dev libxslt-dev libgd-dev wget
-wget https://nginx.org/download/nginx-1.25.3.tar.gz
-tar -zxvf nginx-1.25.3.tar.gz
-mv nginx-1.25.3 nginx
+wget https://nginx.org/download/nginx-${NGINX_VERSION}.tar.gz
+tar -zxvf nginx-${NGINX_VERSION}.tar.gz
+mv nginx-${NGINX_VERSION} nginx
 cd nginx || echo "nginx not exists"
 ./configure \
     --with-cc-opt='-g -O2 -fstack-protector-strong -Wformat -Werror=format-security -fPIC -Wdate-time -D_FORTIFY_SOURCE=2' \
@@ -24,5 +25,4 @@ cd nginx || echo "nginx not exists"
     --with-http_ssl_module --with-http_stub_status_module --with-http_realip_module --with-http_auth_request_module --with-http_v2_module --with-http_dav_module --with-http_slice_module --with-http_addition_module --with-http_gunzip_module --with-http_gzip_static_module --with-http_image_filter_module --with-http_sub_module --with-http_xslt_module \
     --with-threads \
     --with-stream --with-stream_ssl_module --with-stream_ssl_preread_module \
-    --with-mail --with-mail_ssl_module
 make
