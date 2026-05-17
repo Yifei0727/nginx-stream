@@ -40,6 +40,7 @@ echo "" >> "$STREAM_CONF"
 grep -vE '^\s*$|^\s*#' "$HOSTS_FILE" | while read -r domain; do
     cat <<EOF >> "$STREAM_CONF"
 upstream $domain {
+    zone $domain 64k;
     server $domain:443 resolve;
 }
 EOF
